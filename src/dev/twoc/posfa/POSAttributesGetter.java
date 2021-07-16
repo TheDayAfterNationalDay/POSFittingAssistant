@@ -13,7 +13,7 @@ import java.util.concurrent.CountDownLatch;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_OK;
 
-public class PosAttributesGetter {
+public class POSAttributesGetter {
 
     public static final OkHttpClient client = new OkHttpClient.Builder()
             .retryOnConnectionFailure(true)
@@ -31,8 +31,9 @@ public class PosAttributesGetter {
                 }
 
                 @Override
-                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                public void onResponse(@NotNull Call call, @NotNull Response response) {
                     count.countDown();
+                    System.out.println(count.getCount());
                 }
             });
         }
@@ -61,7 +62,6 @@ public class PosAttributesGetter {
         ResponseBody body;
         try {
             response = client.newCall(request).execute();
-            System.out.println("got response, code=" + response.code());
             if (response.code() != HTTP_OK) {
                 return getResponseSync(url);//if failed, retry
             }
